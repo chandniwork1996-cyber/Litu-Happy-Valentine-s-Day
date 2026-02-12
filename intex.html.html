@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Romantic Night 🌙</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    height:100vh;
+    overflow:hidden;
+    background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:'Georgia', serif;
+    perspective:2000px;
+    color:white;
+}
+
+/* Moon */
+.moon{
+    position:absolute;
+    top:60px;
+    right:80px;
+    width:120px;
+    height:120px;
+    background:#fdfbd3;
+    border-radius:50%;
+    box-shadow:0 0 60px #fffacd, 0 0 120px #fffacd;
+}
+
+/* Stars */
+.star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    background:white;
+    border-radius:50%;
+    animation:twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle{
+    from{opacity:0.3;}
+    to{opacity:1;}
+}
+
+/* Panda */
+.panda{
+    position:absolute;
+    bottom:40px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:100px;
+    transition:0.5s;
+}
+
+.panda.love{
+    animation:bounce 1s infinite alternate;
+}
+
+@keyframes bounce{
+    from{transform:translateX(-50%) translateY(0);}
+    to{transform:translateX(-50%) translateY(-12px);}
+}
+
+/* Envelope Scene */
+.scene{
+    width:360px;
+    height:260px;
+    position:relative;
+    transform-style:preserve-3d;
+}
+
+.envelope{
+    width:100%;
+    height:100%;
+    position:relative;
+    transform-style:preserve-3d;
+}
+
+.flap{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:#ff4e50;
+    clip-path:polygon(0 0, 50% 60%, 100% 0);
+    transform-origin:top;
+    transition:1.5s ease;
+}
+
+.body-envelope{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:70%;
+    background:#fc6076;
+    border-radius:12px;
+}
+
+.envelope.open .flap{
+    transform:rotateX(-180deg);
+}
+
+/* Letter */
+.letter{
+    position:absolute;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%) translateY(100%);
+    width:90%;
+    background:white;
+    color:#333;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+    transition:1.5s ease;
+    opacity:0;
+}
+
+.envelope.open .letter{
+    transform:translateX(-50%) translateY(-120%);
+    opacity:1;
+}
+
+/* Button */
+button{
+    position:absolute;
+    bottom:-75px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:12px 25px;
+    border:none;
+    border-radius:25px;
+    background:white;
+    color:#fc6076;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* Floating */
+.floating{
+    position:absolute;
+    font-size:22px;
+    animation:floatUp 6s linear infinite;
+}
+
+@keyframes floatUp{
+    from{transform:translateY(100vh);opacity:1;}
+    to{transform:translateY(-10vh);opacity:0;}
+}
+
+/* Sparkles */
+.sparkle{
+    position:absolute;
+    font-size:18px;
+    animation:sparkle 1.5s infinite alternate;
+}
+
+@keyframes sparkle{
+    from{opacity:0.2;transform:scale(1);}
+    to{opacity:1;transform:scale(1.5);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="moon"></div>
+<div class="panda" id="panda">🐼</div>
+
+<audio id="bg-music" loop>
+<source src="hold-my-hand.mp3" type="audio/mpeg">
+</audio>
+
+<div class="scene">
+    <div class="envelope" id="envelope">
+        <div class="flap"></div>
+        <div class="body-envelope"></div>
+
+        <div class="letter">
+            <h2>Hey Ritu, wasup? Ektu flirt kori ebar ? 😌</h2>
+            <p id="typedText"></p>
+            <h3>Forever Yours ChandniX0X0 💋</h3>
+        </div>
+    </div>
+
+    <button onclick="openLetter()">Press Me to Open 💌</button>
+</div>
+
+<script>
+/* Create Stars */
+for(let i=0;i<120;i++){
+    let star=document.createElement("div");
+    star.classList.add("star");
+    star.style.top=Math.random()*100+"vh";
+    star.style.left=Math.random()*100+"vw";
+    document.body.appendChild(star);
+}
+
+const message=`From the moment you came into my life,
+everything changed in the most beautiful way.
+From the moment I wake up till I go to sleep all I think is about you. I hope to make you smile because of this ehehe
+
+Hold my hand today, tomorrow, and forever.`;
+
+/* Open Letter */
+function openLetter(){
+    document.getElementById("envelope").classList.add("open");
+    document.getElementById("panda").innerHTML="🐼❤️";
+    document.getElementById("panda").classList.add("love");
+    document.getElementById("bg-music").play();
+    typeWriter();
+}
+
+/* Typewriter */
+function typeWriter(){
+    let i=0;
+    function typing(){
+        if(i<message.length){
+            document.getElementById("typedText").innerHTML+=message.charAt(i);
+            i++;
+            setTimeout(typing,40);
+        }
+    }
+    typing();
+}
+
+/* Floating hearts & kisses */
+function createFloating(){
+    const symbols=["❤️","💕","💋"];
+    let el=document.createElement("div");
+    el.classList.add("floating");
+    el.innerHTML=symbols[Math.floor(Math.random()*symbols.length)];
+    el.style.left=Math.random()*100+"vw";
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),6000);
+}
+setInterval(createFloating,600);
+
+/* Sparkles */
+function createSparkle(){
+    let sp=document.createElement("div");
+    sp.classList.add("sparkle");
+    sp.innerHTML="✨";
+    sp.style.left=Math.random()*100+"vw";
+    sp.style.top=Math.random()*100+"vh";
+    document.body.appendChild(sp);
+    setTimeout(()=>sp.remove(),1500);
+}
+setInterval(createSparkle,400);
+</script>
+
+</body>
+</html>
